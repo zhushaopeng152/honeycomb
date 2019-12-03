@@ -1,0 +1,11 @@
+= Inet
+
+Configure http://docs.opendaylight.org/en/stable-oxygen/user-guide/bgpcep-guide/bgp/bgp-user-guide-ip-unicast-family.html[Inet] extension for ODL BGP
+
+Handles following table types:
+
+* Ipv4Unicast
+* Ipv6Unicast
+
+Enable by including InetModule in /opt/honeycomb/modules configuration
+

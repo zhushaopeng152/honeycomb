@@ -1,0 +1,142 @@
+module test-diff {
+    yang-version 1;
+    namespace "urn:opendaylight:params:xml:ns:yang:test:diff";
+    prefix "td";
+
+    revision "2015-01-05" {
+        description "Initial revision";
+    }
+
+    container presence {
+        presence "testing presence";
+    }
+
+    container top-container {
+        leaf string {
+            type string;
+        }
+
+        container empty {
+            leaf in-empty {
+                type string;
+            }
+        }
+
+        container for-leaf-list {
+            leaf-list nested-leaf-list {
+                type string;
+            }
+        }
+
+        container nested-container {
+            list nested-list-in-container {
+                key "name";
+
+                leaf name {
+                    type string;
+                }
+            }
+
+            leaf nested-container-val {
+                type string;
+            }
+
+            leaf-list nested-container-leaf-list {
+                type string;
+            }
+
+            choice nested-choice {
+                case nested-case{
+                    leaf under-nested-case{
+                        type string;
+                    }
+                }
+            }
+        }
+
+        list nested-list {
+            key "name";
+
+            leaf name {
+                type string;
+            }
+
+            leaf text {
+                type string;
+            }
+
+            list deep-list {
+                key "name";
+
+                leaf name {
+                    type string;
+                }
+
+            }
+        }
+    }
+
+    augment /top-container/nested-container {
+        container under-aug-container{
+           leaf under-aug-cont-leaf{
+                type string;
+           }
+        }
+
+        leaf under-aug-leaf {
+            type string;
+        }
+
+        list under-aug-list {
+            key under-aug-list-key;
+            leaf under-aug-list-key{
+                type string;
+            }
+        }
+
+        leaf-list under-aug-leaflist{
+            type string;
+        }
+    }
+
+    augment /top-container/nested-container/under-aug-container {
+        container nested-under-aug-container {
+            leaf nested-under-aug-container-leaf {
+                type string;
+            }
+        }
+
+        leaf nested-under-aug-leaf{
+            type string;
+        }
+
+        list nested-under-aug-list{
+            key nested-under-aug-list-key;
+            leaf nested-under-aug-list-key{
+                type string;
+            }
+        }
+
+        leaf-list nested-under-aug-leaf-list {
+            type string;
+        }
+    }
+
+    container with-choice {
+
+        choice choice {
+            case case1 {
+                leaf in-case1 {
+                    type string;
+                }
+            }
+
+            case case2 {
+                leaf in-case2 {
+                    type string;
+                }
+            }
+        }
+    }
+
+}

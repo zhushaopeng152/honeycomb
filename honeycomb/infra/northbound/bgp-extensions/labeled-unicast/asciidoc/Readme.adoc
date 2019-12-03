@@ -1,0 +1,10 @@
+= Labeled-unicast
+
+Configure http://docs.opendaylight.org/en/stable-oxygen/user-guide/bgpcep-guide/bgp/bgp-user-guide-labeled-family.html[Labeled Unicast] extension for ODL BGP
+
+Handles following table types:
+
+* Ipv4LabeledUnicast
+* Ipv6LabeledUnicast
+
+Enable by including LabeledUnicastModule in /opt/honeycomb/modules configuration

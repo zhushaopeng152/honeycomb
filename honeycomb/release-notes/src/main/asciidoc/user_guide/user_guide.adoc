@@ -1,0 +1,6 @@
+== User guide
+
+Honeycomb provides a framework for building management agents, and as a standalone out of the box
+tool provides no value.
+
+Refer to devel guide for how to utilize Honeycomb.

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <groupId>io.fd.honeycomb.common</groupId>
+        <artifactId>honeycomb-parent</artifactId>
+        <version>1.19.08-SNAPSHOT</version>
+        <relativePath>../common/honeycomb-parent</relativePath>
+    </parent>
+
+    <groupId>io.fd.honeycomb.tools</groupId>
+    <artifactId>honeycomb-tools</artifactId>
+    <name>${project.artifactId}</name>
+    <packaging>pom</packaging>
+    <version>1.19.08-SNAPSHOT</version>
+    <modelVersion>4.0.0</modelVersion>
+    <description>Aggregator for various Honeycomb tools</description>
+
+    <properties>
+        <sonar.skip>true</sonar.skip>
+    </properties>
+
+    <modules>
+        <module>archetype</module>
+    </modules>
+
+</project>

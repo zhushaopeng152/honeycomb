@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) 2017 Cisco and/or its affiliates.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at:
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <parent>
+        <artifactId>impl-parent</artifactId>
+        <groupId>io.fd.honeycomb.common</groupId>
+        <version>1.19.08-SNAPSHOT</version>
+        <relativePath>../../../common/impl-parent</relativePath>
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>io.fd.honeycomb.northbound</groupId>
+    <artifactId>bgp</artifactId>
+    <version>1.19.08-SNAPSHOT</version>
+    <name>${project.artifactId}</name>
+
+    <dependencies>
+        <!-- Common northbound configuration -->
+        <dependency>
+            <groupId>io.fd.honeycomb.northbound</groupId>
+            <artifactId>common</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <!-- Common HC infra utils -->
+        <dependency>
+            <groupId>io.fd.honeycomb</groupId>
+            <artifactId>minimal-distribution-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <!-- DI-->
+        <dependency>
+            <groupId>com.google.inject</groupId>
+            <artifactId>guice</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>net.jmob</groupId>
+            <artifactId>guice.conf</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.fd.honeycomb</groupId>
+            <artifactId>binding-init</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <!-- BGP translation layer -->
+        <dependency>
+            <groupId>io.fd.honeycomb</groupId>
+            <artifactId>bgp-translate-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.fd.honeycomb</groupId>
+            <artifactId>bgp-translate-impl</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <!-- ODL BGP -->
+        <dependency>
+            <groupId>org.opendaylight.bgpcep</groupId>
+            <artifactId>bgp-rib-impl</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.opendaylight.bgpcep</groupId>
+            <artifactId>bgp-openconfig-rp-impl</artifactId>
+            <version>${odl.bgpcep.version}</version>
+        </dependency>
+
+        <!-- test dependencies -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.google.inject.extensions</groupId>
+            <artifactId>guice-testlib</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.fd.honeycomb.northbound.bgp</groupId>
+            <artifactId>extension-common</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.opendaylight.bgpcep</groupId>
+            <artifactId>rsvp-api</artifactId>
+            <version>${odl.bgpcep.version}</version>
+        </dependency>
+    </dependencies>
+
+</project>

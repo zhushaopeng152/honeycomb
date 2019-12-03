@@ -1,0 +1,10 @@
+= Evpn
+
+Configure http://docs.opendaylight.org/en/stable-oxygen/user-guide/bgpcep-guide/bgp/bgp-user-guide-evpn-family.html[Evpn] extension for ODL BGP
+
+Handles following table types:
+
+* L2VpnEvpn
+
+Enable by including EpvnModule in /opt/honeycomb/modules configuration
+

@@ -1,0 +1,27 @@
+module test-edit-config {
+    yang-version 1;
+    namespace "urn:honeycomb:params:xml:ns:yang:test:edit:config";
+    prefix "td";
+
+    revision "2018-06-08" {
+        description "Initial revision";
+    }
+
+    container top-container {
+        leaf name {
+            type string;
+        }
+        list list-in-container {
+            key "name";
+
+            leaf name {
+                type string;
+            }
+
+            leaf description {
+                type string;
+                mandatory true;
+            }
+        }
+    }
+}

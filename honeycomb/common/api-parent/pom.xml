@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ Copyright (c) 2015 Cisco and/or its affiliates.
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at:
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+  <parent>
+    <groupId>io.fd.honeycomb.common</groupId>
+    <artifactId>honeycomb-parent</artifactId>
+    <version>1.19.08-SNAPSHOT</version>
+    <relativePath>../honeycomb-parent</relativePath>
+  </parent>
+
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>api-parent</artifactId>
+  <name>${project.artifactId}</name>
+  <version>1.19.08-SNAPSHOT</version>
+  <packaging>pom</packaging>
+
+  <properties>
+    <annotations.version>3.0.1</annotations.version>
+  </properties>
+
+  <build>
+    <pluginManagement>
+      <plugins>
+        <!-- Yangtools, generate yang -->
+        <plugin>
+          <groupId>org.opendaylight.yangtools</groupId>
+          <artifactId>yang-maven-plugin</artifactId>
+          <version>${odl.yangtools.version}</version>
+          <dependencies>
+            <dependency>
+              <groupId>org.opendaylight.mdsal</groupId>
+              <artifactId>maven-sal-api-gen-plugin</artifactId>
+              <version>${odl.salGenerator.version}</version>
+              <type>jar</type>
+            </dependency>
+          </dependencies>
+          <executions>
+            <execution>
+              <id>binding</id>
+              <goals>
+                <goal>generate-sources</goal>
+              </goals>
+              <configuration>
+                <codeGenerators>
+                  <generator>
+                    <codeGeneratorClass>org.opendaylight.mdsal.binding.maven.api.gen.plugin.CodeGeneratorImpl</codeGeneratorClass>
+                    <outputBaseDir>${salGeneratorPath}</outputBaseDir>
+                  </generator>
+                </codeGenerators>
+                <inspectDependencies>true</inspectDependencies>
+              </configuration>
+            </execution>
+          </executions>
+        </plugin>
+        <plugin>
+          <artifactId>maven-clean-plugin</artifactId>
+          <configuration>
+            <filesets>
+              <fileset>
+                <directory>${salGeneratorPath}</directory>
+                <includes>
+                  <include>**</include>
+                </includes>
+              </fileset>
+            </filesets>
+          </configuration>
+        </plugin>
+        <!-- add generated yang classes to build -->
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>build-helper-maven-plugin</artifactId>
+          <executions>
+            <execution>
+              <id>add-yang-sources</id>
+              <phase>generate-sources</phase>
+              <goals>
+                <goal>add-source</goal>
+              </goals>
+              <configuration>
+                <sources>
+                  <source>${salGeneratorPath}</source>
+                </sources>
+              </configuration>
+            </execution>
+          </executions>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+    <plugins>
+      <plugin>
+        <groupId>org.opendaylight.yangtools</groupId>
+        <artifactId>yang-maven-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </build>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.opendaylight.mdsal</groupId>
+      <artifactId>yang-binding</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.opendaylight.yangtools</groupId>
+      <artifactId>yang-common</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.google.code.findbugs</groupId>
+      <artifactId>annotations</artifactId>
+      <version>${annotations.version}</version>
+    </dependency>
+  </dependencies>
+</project>

@@ -1,0 +1,37 @@
+= Honeycomb {project-version} Release notes
+
+Release notes for honeycomb {project-version}.
+
+Honeycomb is a generic management agent and provides a framework
+for building specialized agents. Exposes NETCONF, RESTCONF and BGP as northbound interfaces.
+
+It uses many features and utilities from different http://www.opendaylight.org/[Opendaylight (ODL)] projects
+(e.g. yangtools, controller, mdsal, netconf, bgpcep).
+
+The biggest use case of honeycomb is VPP (fd.io's Vector packet processor).
+Honeycomb delivers a management agent to enable integration of VPP with e.g. SDN controllers such as Opendaylight.
+
+For VPP specific distribution of Honeycomb, please refer to https://wiki.fd.io/view/Hc2vpp[hc2vpp] project.
+
+== Release plan
+https://wiki.fd.io/view/Honeycomb/Release_Plans/Release_Plan_{project-public-version}[Release plan]
+
+== Features
+Adding to the list of existing features: https://docs.fd.io/honeycomb/1.19.04/release-notes-aggregator/release_notes.html#_features[1904 feature list]
+
+=== New features
+
+=== Removed features
+
+=== Modified features
+
+=== Deprecated features
+
+== Backlog
+
+* https://jira.fd.io/projects/HONEYCOMB/versions/{project-version-in-jira}[JIRA]
+* https://jira.fd.io/jira/secure/ReleaseNote.jspa?projectId=10001&version={project-version-in-jira}[Release notes]
+
+include::user_guide/user_guide.adoc[]
+
+include::devel_guide/devel_guide.adoc[]

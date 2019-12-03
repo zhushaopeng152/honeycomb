@@ -1,0 +1,699 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) 2016 Cisco and/or its affiliates.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at:
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>io.fd.honeycomb.common</groupId>
+    <artifactId>honeycomb-parent</artifactId>
+    <name>${project.artifactId}</name>
+    <version>1.19.08-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <prerequisites>
+        <maven>3.1.1</maven>
+    </prerequisites>
+
+    <properties>
+        <nexusproxy>http://nexus.fd.io/content</nexusproxy>
+        <odl.nexusproxy>https://nexus.opendaylight.org/content</odl.nexusproxy>
+
+        <!-- Sonar configuration -->
+        <!-- Note: This list should match jacoco-maven-plugin's exclusion list below -->
+        <sonar.exclusions>**/gen/**,**/generated-sources/**,**/yang-gen**</sonar.exclusions>
+        <!-- https://github.com/SonarSource/sonar-scanning-examples/blob/master/sonarqube-scanner-maven/pom.xml#L24 -->
+        <!-- The destination file for the code coverage report has to be set to the same value
+             in the parent pom and in each module pom. Then JaCoCo will add up information in
+             the same report, so that, it will give the cross-module code coverage. -->
+        <!-- We store jacoco-it.exec in honeycomb-parent because it is built first,
+             so mvn clean won't remove aggregated report. -->
+        <sonar.jacoco.itReportPath>${maven.multiModuleProjectDirectory}/common/honeycomb-parent/target/jacoco-it.exec</sonar.jacoco.itReportPath>
+
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+        <!-- ODL dependencies -->
+        <odl.yangtools.version>2.1.8</odl.yangtools.version>
+        <odl.mdsal.version>3.0.6</odl.mdsal.version>
+        <odl.mdsal.controller.version>1.9.0</odl.mdsal.controller.version>
+        <odl.mdsalmodel.version>0.13.2</odl.mdsalmodel.version>
+        <odl.binding.model.version>2.0.0</odl.binding.model.version>
+        <odl.netconf.version>1.6.0</odl.netconf.version>
+        <odl.restconf.version>1.9.0</odl.restconf.version>
+        <odl.salGenerator.version>0.13.2</odl.salGenerator.version>
+        <odl.bgpcep.version>0.11.0</odl.bgpcep.version>
+        <salGeneratorPath>target/generated-sources/mdsal-binding</salGeneratorPath>
+
+        <!-- common dependencies -->
+        <junit.version>4.12</junit.version>
+        <mockito.version>2.23.4</mockito.version>
+        <hamcrest.version>2.1</hamcrest.version>
+        <guava.version>23.6-jre</guava.version>
+        <jsr305.version>3.0.2</jsr305.version>
+        <slf4j.version>1.7.25</slf4j.version>
+        <jdt.version>2.2.200</jdt.version>
+
+        <!-- plugins -->
+        <checkstyle.plugin.version>3.0.0</checkstyle.plugin.version>
+        <checkstyle.version>8.18</checkstyle.version>
+        <maven.javadoc.version>3.0.1</maven.javadoc.version>
+        <jacoco.version>0.8.2</jacoco.version>
+        <enforcer.version>3.0.0-M2</enforcer.version>
+        <maven.compile.plugin.version>3.8.0</maven.compile.plugin.version>
+        <maven.bundle.version>4.1.0</maven.bundle.version>
+
+        <!-- checkstyle -->
+        <checkstyle.header.file>APACHE_HEADER.txt</checkstyle.header.file>
+
+        <!-- site -->
+        <!-- skip location check = makes site exec faster -->
+        <dependency.locations.enabled>false</dependency.locations.enabled>
+        <project.info.report.version>2.9</project.info.report.version>
+        <maven.resources.version>3.0.1</maven.resources.version>
+        <maven.site.version>3.4</maven.site.version>
+        <!-- adoc -->
+        <asciidoctor.maven.plugin.version>1.5.3</asciidoctor.maven.plugin.version>
+        <asciidoctorj.diagram.version>1.3.1</asciidoctorj.diagram.version>
+
+        <!-- groovy -->
+        <maven.groovy.version>1.6.2</maven.groovy.version>
+        <groovy.version>2.5.5</groovy.version>
+        <groovy.eclipse.compiler.version>3.3.0-01</groovy.eclipse.compiler.version>
+        <groovy.eclipse.batch.version>2.5.6-02</groovy.eclipse.batch.version>
+
+        <docs.base.url>https://nexus.fd.io/content/sites/site</docs.base.url>
+        <docs.hc.folder>io/fd/honeycomb</docs.hc.folder>
+    </properties>
+
+    <organization>
+        <name>fd.io</name>
+        <url>https://fd.io</url>
+    </organization>
+
+    <licenses>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0</url>
+        </license>
+    </licenses>
+
+    <issueManagement>
+        <system>JIRA</system>
+        <url>https://jira.fd.io/</url>
+    </issueManagement>
+
+    <ciManagement>
+        <system>Jenkins</system>
+        <url>https://jenkins.fd.io/</url>
+    </ciManagement>
+
+    <mailingLists>
+        <mailingList>
+            <name>HC dev</name>
+            <post>honeycomb-dev@fd.io</post>
+            <subscribe>https://lists.fd.io/mailman/listinfo/honeycomb-dev</subscribe>
+            <archive>https://lists.fd.io/pipermail/honeycomb-dev/</archive>
+        </mailingList>
+    </mailingLists>
+
+    <dependencyManagement>
+        <dependencies>
+            <!-- ODL -->
+            <dependency>
+                <groupId>org.opendaylight.yangtools</groupId>
+                <artifactId>yangtools-artifacts</artifactId>
+                <version>${odl.yangtools.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.opendaylight.controller</groupId>
+                <artifactId>mdsal-artifacts</artifactId>
+                <version>${odl.mdsal.controller.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.opendaylight.mdsal</groupId>
+                <artifactId>mdsal-artifacts</artifactId>
+                <version>${odl.mdsal.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.opendaylight.netconf</groupId>
+                <artifactId>netconf-artifacts</artifactId>
+                <version>${odl.netconf.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.opendaylight.netconf</groupId>
+                <artifactId>restconf-artifacts</artifactId>
+                <version>${odl.restconf.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.opendaylight.mdsal.model</groupId>
+                <artifactId>mdsal-model-artifacts</artifactId>
+                <version>${odl.mdsalmodel.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.opendaylight.bgpcep</groupId>
+                <artifactId>bgpcep-artifacts</artifactId>
+                <version>${odl.bgpcep.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!-- Utilities -->
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>${guava.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.code.findbugs</groupId>
+                <artifactId>jsr305</artifactId>
+                <version>${jsr305.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.eclipse.jdt</groupId>
+                <artifactId>org.eclipse.jdt.annotation</artifactId>
+                <version>${jdt.version}</version>
+            </dependency>
+
+            <!-- Testing Dependencies -->
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>${junit.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <!-- Dont use mockito-all, it has problematic dependency on harmcrest
+                More details here - https://github.com/mockito/mockito/issues/324-->
+            <dependency>
+                <groupId>org.mockito</groupId>
+                <artifactId>mockito-core</artifactId>
+                <version>${mockito.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.hamcrest</groupId>
+                <artifactId>hamcrest</artifactId>
+                <version>${hamcrest.version}</version>
+                <scope>test</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <!-- checkstyle -->
+                <plugin>
+                    <artifactId>maven-checkstyle-plugin</artifactId>
+                    <version>${checkstyle.plugin.version}</version>
+                    <configuration>
+                        <!--TODO HONEYCOMB-155 enable fail on violation after issues are resolved + set in as errors in checkstyle xml-->
+                        <failOnViolation>false</failOnViolation>
+                        <failsOnError>true</failsOnError>
+                        <consoleOutput>true</consoleOutput>
+                        <includeTestResources>true</includeTestResources>
+                        <includeTestSourceDirectory>true</includeTestSourceDirectory>
+                        <includes>**\/*.java,**\/*.xml,**\/*.ini,**\/*.sh,**\/*.bat,**\/*.yang</includes>
+                        <excludes>**\/target\/,
+                            **\/bin\/,
+                            **\/target-ide\/,
+                            **\/src/main/yang-gen-config\/,
+                            org/opendaylight/yang/gen/**,
+                            **\/src/main/yang-gen-sal\/,
+                            **\/src/main/xtend-gen\/,
+                            **\/src/main/yang\/,
+                            **\/archetype-resources\/,
+                            **\/.idea\/</excludes>
+                    </configuration>
+                    <executions>
+                        <!-- Override license check configuration to fit Honeycomb coding style-->
+                        <execution>
+                            <id>check-license</id>
+                            <goals>
+                                <goal>check</goal>
+                            </goals>
+                            <phase>process-sources</phase>
+                            <configuration>
+                                <configLocation>honeycomb-checkstyle-license.xml</configLocation>
+                                <outputFile>${project.build.directory}/checkstyle-license-result.xml</outputFile>
+                            </configuration>
+                        </execution>
+                        <!-- Add logging checks from yangtools -->
+                        <execution>
+                            <id>check-logging</id>
+                            <goals>
+                                <goal>check</goal>
+                            </goals>
+                            <phase>process-sources</phase>
+                            <configuration>
+                                <configLocation>honeycomb-checkstyle-logging.xml</configLocation>
+                                <sourceDirectories>
+                                    <sourceDirectory>${project.basedir}</sourceDirectory>
+                                </sourceDirectories>
+
+                                <outputFile>${project.build.directory}/checkstyle-logging-result.xml</outputFile>
+                            </configuration>
+                        </execution>
+                        <!-- Check HC's coding style -->
+                        <execution>
+                            <goals>
+                                <goal>check</goal>
+                            </goals>
+                            <phase>process-sources</phase>
+                            <configuration>
+                                <configLocation>honeycomb-checkstyle.xml</configLocation>
+                            </configuration>
+                        </execution>
+                    </executions>
+                    <dependencies>
+                        <dependency>
+                            <groupId>io.fd.honeycomb.common</groupId>
+                            <artifactId>honeycomb-checkstyle</artifactId>
+                            <!-- Hardcoded version to prevent archetype generated projects to use their own project version -->
+                            <version>1.19.08-SNAPSHOT</version>
+                        </dependency>
+                        <!-- Necessary for logging checks -->
+                        <dependency>
+                            <groupId>org.opendaylight.yangtools</groupId>
+                            <artifactId>checkstyle-logging</artifactId>
+                            <version>${odl.yangtools.version}</version>
+                        </dependency>
+                        <!-- Needed by ODL's checkstyle-logging -->
+                        <dependency>
+                            <groupId>com.puppycrawl.tools</groupId>
+                            <artifactId>checkstyle</artifactId>
+                            <version>${checkstyle.version}</version>
+                        </dependency>
+                    </dependencies>
+                </plugin>
+                <!-- Deactivate strict java8 checks -->
+                <!-- TODO HONEYCOMB-156 fix all the javadoc offenders of doclint -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <version>${maven.javadoc.version}</version>
+                    <configuration>
+                        <source>8</source>
+                        <additionalparam>-Xdoclint:none</additionalparam>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <id>attach-javadocs</id>
+                            <goals>
+                                <goal>jar</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+                <!-- Sonar -->
+                <!-- If Maven encounters a plugin with no version declaration, it will use the LATEST version.
+                     which might not be compatible with Sonar server (fd.io uses 6.7.3 currently).
+                     Therefore it is recommended to lock down version of Sonar plugin:
+                     http://blog.sonatype.com/2008/04/maven-209-released/
+                     -->
+                <plugin>
+                    <groupId>org.sonarsource.scanner.maven</groupId>
+                    <artifactId>sonar-maven-plugin</artifactId>
+                    <version>3.4.1.1170</version>
+                </plugin>
+                <!-- jacoco test coverage for sonar -->
+                <plugin>
+                    <groupId>org.jacoco</groupId>
+                    <artifactId>jacoco-maven-plugin</artifactId>
+                    <version>${jacoco.version}</version>
+                    <executions>
+                        <execution>
+                            <id>agent-for-ut</id>
+                            <goals>
+                                <goal>prepare-agent</goal>
+                            </goals>
+                        </execution>
+                        <execution>
+                            <id>agent-for-it</id>
+                            <goals>
+                                <goal>prepare-agent-integration</goal>
+                            </goals>
+                        </execution>
+                        <execution>
+                            <id>jacoco-site</id>
+                            <goals>
+                                <goal>report</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                    <configuration>
+                        <!-- Appends data to existing JaCoCo execution file. Required for IT coverage.
+                             Will not affect UT which use separate files. -->
+                        <append>true</append>
+                        <excludes>
+                            <exclude>**/gen/**</exclude>
+                            <exclude>**/generated-sources/**</exclude>
+                            <exclude>**/yang-gen/**</exclude>
+                        </excludes>
+                    </configuration>
+                </plugin>
+                <!-- Enforce maven version -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-enforcer-plugin</artifactId>
+                    <version>${enforcer.version}</version>
+                    <executions>
+                        <execution>
+                            <id>enforce-maven</id>
+                            <configuration>
+                                <rules>
+                                    <requireMavenVersion>
+                                        <version>3.1.1</version>
+                                    </requireMavenVersion>
+                                </rules>
+                            </configuration>
+                            <goals>
+                                <goal>enforce</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+                <!-- Compile with google static analysis tool: error_prone -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>${maven.compile.plugin.version}</version>
+                    <configuration>
+                        <!-- Use google's error-prone static analysis-->
+                        <!-- TODO reenable errorprone once it is able to be built using java 11 -->
+                        <!--<compilerId>javac-with-errorprone</compilerId>-->
+                        <forceJavacCompilerUse>true</forceJavacCompilerUse>
+                        <showWarnings>true</showWarnings>
+                        <source>1.8</source>
+                        <target>1.8</target>
+                    </configuration>
+                    <!--<dependencies>-->
+                        <!--<dependency>-->
+                            <!--<groupId>org.codehaus.plexus</groupId>-->
+                            <!--<artifactId>plexus-compiler-javac-errorprone</artifactId>-->
+                            <!--<version>2.8.5</version>-->
+                        <!--</dependency>-->
+                        <!--&lt;!&ndash; override plexus-compiler-javac-errorprone's dependency on-->
+                             <!--Error Prone with the latest version &ndash;&gt;-->
+                        <!--<dependency>-->
+                            <!--<groupId>com.google.errorprone</groupId>-->
+                            <!--<artifactId>error_prone_core</artifactId>-->
+                            <!--<version>2.3.2</version>-->
+                        <!--</dependency>-->
+                    <!--</dependencies>-->
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.felix</groupId>
+                    <artifactId>maven-bundle-plugin</artifactId>
+                    <version>${maven.bundle.version}</version>
+                    <extensions>true</extensions>
+                </plugin>
+                <!-- Source jar -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-source-plugin</artifactId>
+                    <executions>
+                        <execution>
+                            <id>attach-sources</id>
+                            <goals>
+                                <goal>jar</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+                <!-- Site (from https://github.com/asciidoctor/asciidoctor-maven-examples/blob/master/asciidoc-maven-site-example/pom.xml) -->
+                <!-- + https://github.com/asciidoctor/asciidoctor-maven-plugin -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-site-plugin</artifactId>
+                    <version>${maven.site.version}</version>
+                    <configuration>
+                        <generateReports>true</generateReports>
+                        <generateSitemap>true</generateSitemap>
+                        <relativizeDecorationLinks>false</relativizeDecorationLinks>
+                        <locales>en</locales>
+                        <inputEncoding>UTF-8</inputEncoding>
+                        <outputEncoding>UTF-8</outputEncoding>
+                        <siteDirectory>${project.basedir}</siteDirectory>
+                        <relativizeDecorationLinks>false</relativizeDecorationLinks>
+                        <asciidoc>
+                            <requires>
+                                <require>asciidoctor-diagram</require>
+                            </requires>
+                            <!-- optional site-wide AsciiDoc attributes -->
+                            <attributes>
+                                <source-highlighter>coderay</source-highlighter>
+                                <coderay-css>style</coderay-css>
+                                <icons>font</icons>
+                                <sectanchors>true</sectanchors>
+                                <idprefix/>
+                                <idseparator>-</idseparator>
+                            </attributes>
+                        </asciidoc>
+                        <!-- Exclude partial docs that are included elsewhere -->
+                        <moduleExcludes>
+                            <asciidoc>**/_*.adoc</asciidoc>
+                        </moduleExcludes>
+                    </configuration>
+                    <dependencies>
+                        <dependency>
+                            <groupId>org.asciidoctor</groupId>
+                            <artifactId>asciidoctor-maven-plugin</artifactId>
+                            <version>${asciidoctor.maven.plugin.version}</version>
+                        </dependency>
+                        <dependency>
+                            <groupId>org.asciidoctor</groupId>
+                            <artifactId>asciidoctorj-diagram</artifactId>
+                            <version>${asciidoctorj.diagram.version}</version>
+                        </dependency>
+                    </dependencies>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.gmavenplus</groupId>
+                    <artifactId>gmavenplus-plugin</artifactId>
+                    <version>${maven.groovy.version}</version>
+                    <executions>
+                        <!-- Generate Readme.adoc if not present -->
+                        <execution>
+                            <id>generate-adoc</id>
+                            <phase>generate-resources</phase>
+                            <goals>
+                                <goal>execute</goal>
+                            </goals>
+                            <configuration>
+                                <!-- Generate module adoc documentation -->
+                                <scripts>
+                                    <script>
+                                        <![CDATA[
+                                            import io.fd.honeycomb.common.scripts.ReadmeGenerator
+                                            ReadmeGenerator.checkReadme(project, properties, log)
+                                        ]]>
+                                    </script>
+                                </scripts>
+                            </configuration>
+                        </execution>
+                        <!-- Fix generated html -->
+                        <execution>
+                            <id>fix-generated-site</id>
+                            <phase>site</phase>
+                            <goals>
+                                <goal>execute</goal>
+                            </goals>
+                            <configuration>
+                                <!-- Site generates wrong link to Readme.html, trying to point to Readme.html at root -->
+                                <scripts>
+                                    <script>
+                                        <![CDATA[
+                                            import io.fd.honeycomb.common.scripts.ReadmeGenerator
+                                            ReadmeGenerator.fixSite(project, properties, log)
+                                        ]]>
+                                    </script>
+                                </scripts>
+                            </configuration>
+                        </execution>
+                        <!-- copy generated schema pictures -->
+                        <execution>
+                            <id>copy-generated-pictures</id>
+                            <phase>site</phase>
+                            <goals>
+                                <goal>execute</goal>
+                            </goals>
+                            <configuration>
+                                <!-- Copies generated schema pictures from ascii-doctor folders to site folder-->
+                                <scripts>
+                                    <script>
+                                        <![CDATA[
+                                            import io.fd.honeycomb.common.scripts.AsciiDocImgForwarder
+                                            AsciiDocImgForwarder.copyGeneratedImages(project, properties, log)
+                                        ]]>
+                                    </script>
+                                </scripts>
+                            </configuration>
+                        </execution>
+                    </executions>
+                    <dependencies>
+                        <dependency>
+                            <groupId>org.codehaus.groovy</groupId>
+                            <artifactId>groovy-all</artifactId>
+                            <type>pom</type>
+                            <version>${groovy.version}</version>
+                        </dependency>
+                        <dependency>
+                            <groupId>io.fd.honeycomb.doc</groupId>
+                            <artifactId>asciidoc-scripts</artifactId>
+                            <version>1.19.08-SNAPSHOT</version>
+                        </dependency>
+                    </dependencies>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+        <plugins>
+            <plugin>
+                <artifactId>maven-enforcer-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <artifactId>maven-source-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <artifactId>maven-javadoc-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <artifactId>maven-dependency-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.gmavenplus</groupId>
+                <artifactId>gmavenplus-plugin</artifactId>
+            </plugin>
+        </plugins>
+
+        <!-- To support site push-->
+        <extensions>
+            <extension>
+                <groupId>org.apache.maven.wagon</groupId>
+                <artifactId>wagon-webdav-jackrabbit</artifactId>
+                <version>2.9</version>
+            </extension>
+        </extensions>
+    </build>
+
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-project-info-reports-plugin</artifactId>
+                <version>${project.info.report.version}</version>
+                <reportSets>
+                    <reportSet>
+                        <reports>
+                            <report>index</report>
+                            <report>summary</report>
+                            <report>modules</report>
+                            <report>cim</report>
+                            <report>dependencies</report>
+                            <report>distribution-management</report>
+                            <report>mailing-list</report>
+                            <report>issue-tracking</report>
+                            <report>license</report>
+                            <report>scm</report>
+                        </reports>
+                    </reportSet>
+                </reportSets>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>${maven.javadoc.version}</version>
+                <reportSets>
+                    <reportSet>
+                        <id>default</id>
+                        <reports>
+                            <report>javadoc-no-fork</report>
+                        </reports>
+                    </reportSet>
+                </reportSets>
+                <configuration>
+                    <additionalparam>-Xdoclint:none</additionalparam>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>${maven.resources.version}</version>
+            </plugin>
+        </plugins>
+    </reporting>
+
+    <distributionManagement>
+        <repository>
+            <id>fdio-release</id>
+            <url>${nexusproxy}/repositories/fd.io.release/</url>
+        </repository>
+        <snapshotRepository>
+            <id>fdio-snapshot</id>
+            <url>${nexusproxy}/repositories/fd.io.snapshot/</url>
+        </snapshotRepository>
+        <site>
+            <id>fdio-site</id>
+            <url>dav:${docs.base.url}/${docs.hc.folder}/${project.version}</url>
+        </site>
+    </distributionManagement>
+
+    <repositories>
+        <!-- Using only ODL stable releases -->
+        <repository>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>never</updatePolicy>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <id>opendaylight-mirror</id>
+            <name>opendaylight-mirror</name>
+            <url>${odl.nexusproxy}/repositories/public/</url>
+        </repository>
+    </repositories>
+</project>

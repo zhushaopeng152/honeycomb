@@ -1,0 +1,3 @@
+= northbound-aggegator
+
+Aggregate all modules for northbound interfaces.
